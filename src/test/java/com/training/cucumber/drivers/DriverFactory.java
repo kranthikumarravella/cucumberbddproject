@@ -1,6 +1,9 @@
 package com.training.cucumber.drivers;
-
+import cucumber.api.Scenario;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -46,14 +49,21 @@ public class DriverFactory {
     public void navigate(String url){
         driver.get(url);
     }
-
-    public void sleep(int ms){
+    public void embedScreenshot(Scenario scenario) {
         try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            byte[] screenShot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            scenario.embed(screenShot, "image/png");
+        } catch (WebDriverException e) {
+            System.out.println("took screen shot. ");
         }
     }
-}
+        public void sleep( int ms){
+            try {
+                Thread.sleep(ms);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
